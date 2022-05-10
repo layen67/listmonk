@@ -87,7 +87,7 @@ get_config() {
 
 get_containers() {
 	info "fetching docker-compose.yml from listmonk repo"
-	download https://raw.githubusercontent.com/knadh/listmonk/master/docker-compose.yml docker-compose.yml
+	download https://raw.githubusercontent.com/layen67/listmonk/master/docker-compose.yml docker-compose.yml
 }
 
 modify_config(){
@@ -101,7 +101,7 @@ modify_config(){
 	# Note that `password` is wrapped with `\b`. This ensures that `admin_password` doesn't match this pattern instead.
 	sed -i "s/\bpassword\b = \"listmonk\"/password = \"$db_password\"/g" config.toml
 	# Replace `app.address=localhost:9000` with `app.address=0.0.0.0:9000` in config file.
-	sed -i "s/address = \"localhost:9000\"/address = \"0.0.0.0:9000\"/g" config.toml
+	sed -i "s/address = \"localhost:9000\"/address = \"0.0.0.0:9002\"/g" config.toml
 
 	info "modifying docker-compose.yml"
 	sed -i "s/POSTGRES_PASSWORD=listmonk/POSTGRES_PASSWORD=$db_password/g" docker-compose.yml
@@ -124,7 +124,7 @@ show_output(){
 	sleep 3
 
 	if is_running listmonk_db && is_running listmonk_app
-	then completed "Listmonk is now up and running. Visit http://localhost:9000 in your browser."
+	then completed "Listmonk is now up and running. Visit http://localhost:9002 in your browser."
 	else
 		error "error running containers. something went wrong."
 	fi
